@@ -61,7 +61,6 @@ Thumbs.db
 *.log
 
 # Training outputs
-samples/
 diffusion_samples/
 logs/
 runs/
