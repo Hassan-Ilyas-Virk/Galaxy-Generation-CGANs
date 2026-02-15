@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy CGAN Generator</title>
+    <meta name="description" content="Generate realistic galaxy images using Conditional GAN with physics-aware controls">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">
+                <span class="gradient-text">Galaxy CGAN</span>
+                <span class="subtitle">Physics-Aware Generator</span>
+            </h1>
+            <p class="description">Generate realistic galaxy images with precise control over morphology and physical attributes</p>
+        </header>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Controls Panel -->
+            <div class="controls-panel glass-card">
+                <h2 class="section-title">Generation Controls</h2>
+                
+                <!-- Morphology Selection -->
+                <div class="control-group">
+                    <label class="control-label">
+                        <span class="label-text">Morphology Class</span>
+                        <span class="label-hint">Select galaxy type</span>
+                    </label>
+                    <div class="morphology-buttons">
+                        <button class="morph-btn active" data-class="0">
+                            <span class="morph-icon">🌀</span>
+                            <span class="morph-name">Spiral</span>
+                        </button>
+                        <button class="morph-btn" data-class="1">
+                            <span class="morph-icon">⭕</span>
+                            <span class="morph-name">Elliptical</span>
+                        </button>
+                        <button class="morph-btn" data-class="2">
+                            <span class="morph-icon">💥</span>
+                            <span class="morph-name">Merger</span>
+                        </button>
+                        <button class="morph-btn" data-class="3">
+                            <span class="morph-icon">➖</span>
+                            <span class="morph-name">Edge-on</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Physical Attributes -->
+                <div class="control-group">
+                    <label class="control-label">
+                        <span class="label-text">Physical Attributes</span>
+                        <span class="label-hint">Adjust galaxy properties</span>
+                    </label>
+                    
+                    <!-- Size Slider -->
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <span class="slider-label">Size</span>
+                            <span class="slider-value" id="size-value">0.65</span>
+                        </div>
+                        <input type="range" id="size-slider" class="slider" min="0.3" max="1.0" step="0.01" value="0.65">
+                        <div class="slider-range">
+                            <span>0.3</span>
+                            <span>1.0</span>
+                        </div>
+                    </div>
+
+                    <!-- Brightness Slider -->
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <span class="slider-label">Brightness</span>
+                            <span class="slider-value" id="brightness-value">0.60</span>
+                        </div>
+                        <input type="range" id="brightness-slider" class="slider" min="0.2" max="1.0" step="0.01" value="0.60">
+                        <div class="slider-range">
+                            <span>0.2</span>
+                            <span>1.0</span>
+                        </div>
+                    </div>
+
+                    <!-- Ellipticity Slider -->
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <span class="slider-label">Ellipticity</span>
+                            <span class="slider-value" id="ellipticity-value">0.45</span>
+                        </div>
+                        <input type="range" id="ellipticity-slider" class="slider" min="0.0" max="0.9" step="0.01" value="0.45">
+                        <div class="slider-range">
+                            <span>0.0</span>
+                            <span>0.9</span>
+                        </div>
+                    </div>
+
+                    <!-- Redshift Slider -->
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <span class="slider-label">Redshift</span>
+                            <span class="slider-value" id="redshift-value">0.25</span>
+                        </div>
+                        <input type="range" id="redshift-slider" class="slider" min="0.0" max="0.5" step="0.01" value="0.25">
+                        <div class="slider-range">
+                            <span>0.0</span>
+                            <span>0.5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <button class="generate-btn" id="generate-btn">
+                    <span class="btn-text">Generate Galaxy</span>
+                    <span class="btn-icon">✨</span>
+                </button>
+            </div>
+
+            <!-- Display Panel -->
+            <div class="display-panel glass-card">
+                <h2 class="section-title">Generated Galaxy</h2>
+                
+                <div class="galaxy-display" id="galaxy-display">
+                    <div class="placeholder-content">
+                        <div class="placeholder-icon">🌌</div>
+                        <p class="placeholder-text">Your generated galaxy will appear here</p>
+                        <p class="placeholder-hint">Adjust the controls and click "Generate Galaxy"</p>
+                    </div>
+                    <img id="galaxy-image" class="galaxy-image" alt="Generated Galaxy" style="display: none;">
+                    <div class="loading-spinner" id="loading-spinner" style="display: none;">
+                        <div class="spinner"></div>
+                        <p class="loading-text">Generating galaxy...</p>
+                    </div>
+                </div>
+
+                <!-- Info Display -->
+                <div class="info-display" id="info-display" style="display: none;">
+                    <div class="info-item">
+                        <span class="info-label">Morphology:</span>
+                        <span class="info-value" id="info-morphology">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Size:</span>
+                        <span class="info-value" id="info-size">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Brightness:</span>
+                        <span class="info-value" id="info-brightness">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Ellipticity:</span>
+                        <span class="info-value" id="info-ellipticity">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Redshift:</span>
+                        <span class="info-value" id="info-redshift">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Physics-Aware Conditional GAN • Galaxy Zoo 2 Dataset</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
