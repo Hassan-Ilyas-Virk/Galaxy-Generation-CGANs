@@ -39,6 +39,8 @@ data/
 *.jpeg
 *.png
 *.gif
+
+# Allow sample images
 !samples/*.png
 !frontend/*.png
 

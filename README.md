@@ -28,6 +28,14 @@ This project addresses a critical gap in astronomical generative AI by ensuring 
 - **Ellipticity**: Shape ellipticity (0.0 - 0.9)
 - **Redshift**: Cosmological redshift (0.0 - 0.5)
 
+## Generated Samples
+
+Below is an example of generated galaxies from epoch 40 of training, showing diverse morphologies and physical attributes:
+
+![Generated Galaxy Samples - Epoch 40](samples/epoch_040.png)
+
+*4×4 grid showing 16 generated galaxies with varying morphologies (spiral, elliptical, merger, edge-on) and physical parameters.*
+
 ## Architecture
 
 ### Generator Network
